@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500" prefWidth="400" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chat_client.FXMLDocumentController">
+    <children>
+        <Button fx:id="connectButton" layoutX="254.0" layoutY="17.0" prefHeight="23.0" prefWidth="72.0" text="Connect" />
+        <Label fx:id="label" layoutX="14.0" layoutY="20.0" minHeight="16" minWidth="69" text="User Name : " />
+      <TextField fx:id="usernameTextField" layoutX="86.0" layoutY="17.0" prefHeight="23.0" prefWidth="159.0" />
+      <TextField fx:id="addressTextField" layoutX="86.0" layoutY="50.0" text="localhost" />
+      <TextField fx:id="portTextField" layoutX="284.0" layoutY="50.0" prefHeight="23.0" prefWidth="42.0" text="8888" />
+      <Label layoutX="14.0" layoutY="54.0" text="Address : " />
+      <Label layoutX="251.0" layoutY="54.0" text="Port : " />
+      <TextArea fx:id="textArea" editable="false" layoutX="8.0" layoutY="82.0" prefHeight="372.0" prefWidth="384.0" />
+      <TextField fx:id="sendMessage" layoutX="8.0" layoutY="463.0" prefHeight="23.0" prefWidth="320.0" />
+      <Button fx:id="sendMessageButton" layoutX="336.0" layoutY="463.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="55.0" text="Send" />
+    </children>
+</AnchorPane>

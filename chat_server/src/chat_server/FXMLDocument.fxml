@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chat_server.FXMLDocumentController">
+    <children>
+        <Button fx:id="startButton" layoutX="14.0" layoutY="56.0" onAction="#startButtonAction" prefHeight="23.0" prefWidth="68.0" text="Start" />
+        <Label fx:id="label" layoutX="136.0" layoutY="14.0" minHeight="16" minWidth="68.0" prefHeight="23.0" prefWidth="68.0" text="Chat Server" />
+      <Button fx:id="shutDownButton" layoutX="285.0" layoutY="56.0" mnemonicParsing="false" onAction="#shutDownButtonAction" prefHeight="23.0" prefWidth="101.0" text="ShutDown" />
+      <Button fx:id="onlineUserButton" layoutX="15.0" layoutY="463.0" mnemonicParsing="false" onAction="#onlineUserButtonAction" prefHeight="23.0" prefWidth="101.0" text="Onlinr User" />
+      <Button fx:id="clearMessageButton" layoutX="286.0" layoutY="463.0" mnemonicParsing="false" onAction="#clearMessageButtonAction" prefHeight="23.0" prefWidth="101.0" text="Clear Message" />
+      <TextArea fx:id="textArea" editable="false" layoutX="14.0" layoutY="91.0" prefHeight="364.0" prefWidth="372.0" />
+    </children>
+</AnchorPane>
