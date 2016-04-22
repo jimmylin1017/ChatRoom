@@ -45,8 +45,8 @@ public class Server
 			{
 				System.out.println("wait for connectiong");
 				Socket clinetsokcket=skt.accept();	
-				Thread t=new Thread(new Process(clinetsokcket));
-				t.start();
+				Thread t=new Thread(new Process(clinetsokcket));					//Declaration of thread.
+				t.start();																					//Execute Runnable.run
 			
 			}
 		}
@@ -55,7 +55,7 @@ public class Server
 		}
 	}
 	
-	public class Process implements Runnable{
+	public class Process implements Runnable{											//Thread
 		public String name;
 		public String groupname;
 		public Socket skt;
@@ -78,19 +78,19 @@ public class Server
 			
 		}
 		@Override
-		public void run() 
+		public void run() 																			//Thread runs this
 		{
 			try{
 				System.out.println("new one come in");	
 			
-				InputStreamReader isReader = new InputStreamReader(skt.getInputStream()); 
+				InputStreamReader isReader = new InputStreamReader(skt.getInputStream()); //Return a input stream from skt.
 				reader = new BufferedReader(isReader);
 				
 				name=reader.readLine();
 				System.out.println("user name:"+name);
-				PrintStream writer = new PrintStream(skt.getOutputStream());  
-				printmap.put(name,writer);
-				choosegroup();
+				PrintStream writer = new PrintStream(skt.getOutputStream());  					//printstream is a convenient type to deal with output stream.	
+				printmap.put(name,writer);																			//printmap is an hashmap
+				choosegroup();																								//print the group name and the members in it.
 				
 				String types=reader.readLine();
 				int type=Integer.parseInt(types);
@@ -144,18 +144,18 @@ public class Server
 		}
 		public void choosegroup()
 		{
-			PrintStream writer = (PrintStream) printmap.get(name);
-			Set<String> key = groupmap.keySet();  
+			PrintStream writer = (PrintStream) printmap.get(name);									//get outputstream
+			Set<String> key = groupmap.keySet();  															//A set of key of groupmap which is <string, Arraylist<string>>.
 	
-			for (String string : key) 
-			{  
-				ArrayList<String> namelist=groupmap.get(string);
+			for (String string : key)																						//To check every value(key) in set Key. 
+			{  	
+				ArrayList<String> namelist=groupmap.get(string);										//Get the value(Arraylist) through key value(string) from groupmap.
 				
-				writer.println("Groupname:"+string);
+				writer.println("Groupname:"+string);														
 				writer.flush();	
 				writer.println("member:");
 				writer.flush();
-				for(int i=0;i<namelist.size();i++)
+				for(int i=0;i<namelist.size();i++)																	//Write the member in the namelist.
 				{
 					writer.println("    "+namelist.get(i));
 					writer.flush();	
