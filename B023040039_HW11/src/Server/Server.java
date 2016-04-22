@@ -78,7 +78,7 @@ public class Server
 			
 		}
 		@Override
-		public void run() 																			//Thread runs this
+		public void run() 																									//Thread runs this
 		{
 			try{
 				System.out.println("new one come in");	
