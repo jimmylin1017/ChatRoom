@@ -95,7 +95,7 @@ public class Server
 				String types=reader.readLine();
 				int type=Integer.parseInt(types);
 				
-				if (type==2)
+				if (type==2)																									//Add new member into group.
 				{
 					
 					groupname=reader.readLine();
@@ -103,7 +103,7 @@ public class Server
 					System.out.println("join group "+groupname);
 					
 				}
-				else 
+				else 																											//Add new group and add a member into new group.
 				{
 					
 					groupname=reader.readLine();
@@ -126,10 +126,10 @@ public class Server
 					broadcast(name+"is exit");
 				}
 				
-				groupmap.get(groupname).remove(name);
+				groupmap.get(groupname).remove(name);														//Remove a member from the arraylist.
 				memberbroadcast();
 				ArrayList<String> namelist=groupmap.get(groupname);
-				if (namelist.size()==0)
+				if (namelist.size()==0)																						//If there is no one in the group, then delete the group.
 				{
 					groupmap.remove(groupname);
 					System.out.println(groupname+"is delete");
@@ -177,14 +177,14 @@ public class Server
 				writer.flush();	
 			}
 		}
-		public void memberbroadcast()
+		public void memberbroadcast()																		
 		{
 			try
 			{
 				ArrayList<String> namelist=groupmap.get(groupname);
 				for(int i=0;i<namelist.size();i++)
 				{
-					PrintStream writer = (PrintStream) printmap.get(namelist.get(i));
+					PrintStream writer = (PrintStream) printmap.get(namelist.get(i));							//Write the members' information to all members in the group.
 					
 					writer.println("member:"+namelist.size());
 					writer.flush();	
@@ -201,7 +201,7 @@ public class Server
 				ArrayList<String> namelist=groupmap.get(groupname);
 				for(int i=0;i<namelist.size();i++)
 				{
-					PrintStream writer = (PrintStream) printmap.get(namelist.get(i));
+					PrintStream writer = (PrintStream) printmap.get(namelist.get(i));							//Write message to every group members.
 					
 					writer.println(message);
 					writer.flush();	
