@@ -90,7 +90,7 @@ public class Server
 				System.out.println("user name:"+name);
 				PrintStream writer = new PrintStream(skt.getOutputStream());  
 				printmap.put(name,writer);
-				choosegroup();
+				choosegroup();										//print group name and the members.
 				
 				String types=reader.readLine();
 				int type=Integer.parseInt(types);

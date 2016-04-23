@@ -10,10 +10,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Client extends Thread{
-	public int port;
+public class Client{
+	/*public int port;
 	public String hostname;
-	private ChatClientSocket clientSkt;
+	private ChatClientSocket clientSkt;*/
 	public static void main(String[] args)
     {
     	Scanner keyboard=new Scanner(System.in);
@@ -22,13 +22,16 @@ public class Client extends Thread{
     	System.out.print("Port:");
     	int num=keyboard.nextInt();
     	
-    	Client c1=new Client();
+    	/*Client c1=new Client();
     	c1.set(name, num);
     	c1.setToClient();
-    	keyboard.close();
+    	keyboard.close();*/
+    	Clientexecute c1=new Clientexecute(name,num);
+    	c1.setToClient();
+    	
     	
     }
-	public void set(String name,int port)
+	/*public void set(String name,int port)
 	{
 		this.port=port;
 		hostname=name;
@@ -85,7 +88,78 @@ public class Client extends Thread{
        	 	}
         }
         keyboard.close();
+    }*/
+}
+
+
+class Clientexecute extends Thread{
+	
+	public int port;
+	public String hostname;
+	private ChatClientSocket clientSkt;
+	
+	public Clientexecute(String name,int num)
+	{
+		hostname = name;
+		port = num;
+	}
+	public void setToClient() {
+
+        clientSkt = new ChatClientSocket(hostname, port);
+        
+        
+        Scanner keyboard=new Scanner(System.in);
+        System.out.println("please input your name");
+        String names=keyboard.nextLine();
+        
+        clientSkt.start();
+        try {
+            sleep(100);
+        } catch (InterruptedException e) {};
+        
+        clientSkt.DataOutput(names);
+        
+        System.out.println("Please choose 1.Add a new group\t2.Join a specific group");
+        /*try {
+            sleep(1000);
+        } catch (InterruptedException e) {};*/
+        
+        String type=keyboard.nextLine();
+        clientSkt.DataOutput(type);
+        
+        String groupname=null;
+		int afterConvert = Integer.parseInt(type);
+		if (afterConvert==2)
+		{
+			System.out.println("Input group name");
+			groupname=keyboard.nextLine();
+			clientSkt.DataOutput(groupname);
+			
+			System.out.println("join");
+			
+		}
+		else 
+		{
+			System.out.println("Input group name");
+			groupname=keyboard.nextLine();
+			clientSkt.DataOutput(groupname);
+			System.out.println("new");
+		}
+        while(true)
+        {
+        	String name=keyboard.nextLine();
+        	clientSkt.DataOutput(name);
+        	if (name.equals("EXIT"))
+        	{
+        		 
+        		clientSkt.terminate();
+        		break;
+        		
+       	 	}
+        }
+        keyboard.close();
     }
+	
 }
 class ChatClientSocket extends Thread {
     private Socket skt;        
