@@ -45,8 +45,8 @@ public class Server
 			{
 				System.out.println("wait for connectiong");
 				Socket clinetsokcket=skt.accept();	
-				Thread t=new Thread(new Process(clinetsokcket));
-				t.start();
+				Thread t=new Thread(new Process(clinetsokcket));					//Declaration of thread.
+				t.start();																					//Execute Runnable.run
 			
 			}
 		}
@@ -55,7 +55,7 @@ public class Server
 		}
 	}
 	
-	public class Process implements Runnable{
+	public class Process implements Runnable{											//Thread
 		public String name;
 		public String groupname;
 		public Socket skt;
@@ -78,24 +78,30 @@ public class Server
 			
 		}
 		@Override
-		public void run() 
+		public void run() 																									//Thread runs this
 		{
 			try{
 				System.out.println("new one come in");	
 			
-				InputStreamReader isReader = new InputStreamReader(skt.getInputStream()); 
+				InputStreamReader isReader = new InputStreamReader(skt.getInputStream()); //Return a input stream from skt.
 				reader = new BufferedReader(isReader);
 				
 				name=reader.readLine();
 				System.out.println("user name:"+name);
+<<<<<<< HEAD
 				PrintStream writer = new PrintStream(skt.getOutputStream());  
 				printmap.put(name,writer);
 				choosegroup();										//print group name and the members.
+=======
+				PrintStream writer = new PrintStream(skt.getOutputStream());  					//printstream is a convenient type to deal with output stream.	
+				printmap.put(name,writer);																			//printmap is an hashmap
+				choosegroup();																								//print the group name and the members in it.
+>>>>>>> 269144c81aac91541c8d6ec1a34204f882cf89aa
 				
 				String types=reader.readLine();
 				int type=Integer.parseInt(types);
 				
-				if (type==2)
+				if (type==2)																									//Add new member into group.
 				{
 					
 					groupname=reader.readLine();
@@ -103,7 +109,7 @@ public class Server
 					System.out.println("join group "+groupname);
 					
 				}
-				else 
+				else 																											//Add new group and add a member into new group.
 				{
 					
 					groupname=reader.readLine();
@@ -126,10 +132,10 @@ public class Server
 					broadcast(name+"is exit");
 				}
 				
-				groupmap.get(groupname).remove(name);
+				groupmap.get(groupname).remove(name);														//Remove a member from the arraylist.
 				memberbroadcast();
 				ArrayList<String> namelist=groupmap.get(groupname);
-				if (namelist.size()==0)
+				if (namelist.size()==0)																						//If there is no one in the group, then delete the group.
 				{
 					groupmap.remove(groupname);
 					System.out.println(groupname+"is delete");
@@ -144,18 +150,18 @@ public class Server
 		}
 		public void choosegroup()
 		{
-			PrintStream writer = (PrintStream) printmap.get(name);
-			Set<String> key = groupmap.keySet();  
+			PrintStream writer = (PrintStream) printmap.get(name);									//get outputstream
+			Set<String> key = groupmap.keySet();  															//A set of key of groupmap which is <string, Arraylist<string>>.
 	
-			for (String string : key) 
-			{  
-				ArrayList<String> namelist=groupmap.get(string);
+			for (String string : key)																						//To check every value(key) in set Key. 
+			{  	
+				ArrayList<String> namelist=groupmap.get(string);										//Get the value(Arraylist) through key value(string) from groupmap.
 				
-				writer.println("Groupname:"+string);
+				writer.println("Groupname:"+string);														
 				writer.flush();	
 				writer.println("member:");
 				writer.flush();
-				for(int i=0;i<namelist.size();i++)
+				for(int i=0;i<namelist.size();i++)																	//Write the member in the namelist.
 				{
 					writer.println("    "+namelist.get(i));
 					writer.flush();	
@@ -177,14 +183,14 @@ public class Server
 				writer.flush();	
 			}
 		}
-		public void memberbroadcast()
+		public void memberbroadcast()																		
 		{
 			try
 			{
 				ArrayList<String> namelist=groupmap.get(groupname);
 				for(int i=0;i<namelist.size();i++)
 				{
-					PrintStream writer = (PrintStream) printmap.get(namelist.get(i));
+					PrintStream writer = (PrintStream) printmap.get(namelist.get(i));							//Write the members' information to all members in the group.
 					
 					writer.println("member:"+namelist.size());
 					writer.flush();	
@@ -201,7 +207,7 @@ public class Server
 				ArrayList<String> namelist=groupmap.get(groupname);
 				for(int i=0;i<namelist.size();i++)
 				{
-					PrintStream writer = (PrintStream) printmap.get(namelist.get(i));
+					PrintStream writer = (PrintStream) printmap.get(namelist.get(i));							//Write message to every group members.
 					
 					writer.println(message);
 					writer.flush();	
