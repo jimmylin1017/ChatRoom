@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
 
+import java.io.*;
+
 
 public class Server
 {
@@ -121,7 +123,7 @@ public class Server
 					// creat new group
 					groupName = clientReader.readLine();
 					ArrayList<String> nameList = new ArrayList<String>();
-					
+
 					nameList.add(name);
 
 					groupMap.put(groupName, nameList);
@@ -147,6 +149,27 @@ public class Server
 						name = command[1];
 						groupMap.get(groupName).add(name);
 						printStreamMap.put(name, outputToClinet);
+					}
+					else if(command[0].toUpperCase().equals("@FILE"))
+					{
+						//BufferedInputStream inputStream = new BufferedInputStream(clientSkt.getInputStream()); 
+						BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream("file/" + command[1])); 
+						System.out.println("waiting file....");
+						int counter = Integer.parseInt(clientReader.readLine());
+						System.out.println("counter : " + counter);
+						int readin;
+						while(counter > 0)
+						{
+							readin = clientReader.read();
+							outputStream.write(readin);
+							System.out.println(readin);
+							counter--;
+                		}
+
+                		outputStream.flush();
+		                outputStream.close();                
+		                //inputStream.close(); 
+                		System.out.println("get file!");
 					}
 					else
 					{

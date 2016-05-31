@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import java.io.*;
+
 public class Client extends Thread
 {
 	public int port;
@@ -87,7 +89,7 @@ public class Client extends Thread
             // join a group
 			System.out.println("Input group name");
 			groupname = keyboard.nextLine();
-			clientSkt.DataOutput(groupname);			
+			clientSkt.DataOutput(groupname);
 		}
 		else
 		{
@@ -114,8 +116,18 @@ public class Client extends Thread
                 System.out.println("Command Error!");
                 continue;
             }
-
-            clientSkt.DataOutput(message);
+            else if(command[0].toUpperCase().equals("@FILE") && command.length >= 2)
+            {
+                clientSkt.DataOutput(message);
+                File file;
+                if((file = new File(command[1])) != null)
+                    clientSkt.FileOutput(file);
+                System.out.println("file upload!");
+            }
+            else
+            {
+                clientSkt.DataOutput(message);
+            }
         }
 
         keyboard.close();
@@ -183,7 +195,6 @@ class clientSocketController extends Thread
                 */
 
                 System.out.println(message);
-
             }
 
             if(message == null)
@@ -208,5 +219,29 @@ class clientSocketController extends Thread
     public void DataNumOutput(int data)
     {
         theOutputStream.println(data);
+    }
+
+    public void FileOutput(File file)
+    {
+        try
+        {
+            BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+            int counter = inputStream.available();
+            theOutputStream.println(counter);
+            System.out.println("counter : " + counter);
+            int readin;
+            while((readin = inputStream.read()) != -1)
+            {
+                 theOutputStream.write(readin);
+                 System.out.println(readin);
+            }
+
+            theOutputStream.flush();
+            inputStream.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 }
