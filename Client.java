@@ -1,3 +1,4 @@
+/*
 import java.io.BufferedReader;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -7,8 +8,10 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+*/
+import java.util.*;
 import java.io.*;
+import java.net.*;
 
 public class Client extends Thread
 {
@@ -60,6 +63,7 @@ public class Client extends Thread
         // setting user name
         clientSkt.DataOutput(names);
         
+        /*
         System.out.println("Please choose 1.Add a new group\t2.Join a specific group");
         try
         {
@@ -98,12 +102,13 @@ public class Client extends Thread
 			groupname = keyboard.nextLine();
 			clientSkt.DataOutput(groupname);
 		}
+        */
 
         // input message
         while(true)
         {
         	String message = keyboard.nextLine();
-            String command[] = message.split(" ", 2);
+            String commandArr[] = message.split(" ", 2);
 
             // exit command
         	if(message.toUpperCase().equals("@EXIT"))
@@ -111,18 +116,20 @@ public class Client extends Thread
         		clientSkt.terminate();
         		break;
        	 	}
-            else if(command[0].toUpperCase().equals("@RENAME") && command.length < 2)
+            else if(commandArr[0].toUpperCase().equals("@RENAME") && commandArr.length < 2)
             {
                 System.out.println("Command Error!");
                 continue;
             }
-            else if(command[0].toUpperCase().equals("@FILE") && command.length >= 2)
+            else if(commandArr[0].toUpperCase().equals("@POST") && commandArr.length < 2)
             {
-                clientSkt.DataOutput(message);
-                File file;
-                if((file = new File(command[1])) != null)
-                    clientSkt.FileOutput(file);
-                System.out.println("file upload!");
+                System.out.println("Command Error!");
+                continue;
+            }
+            else if(commandArr[0].toUpperCase().equals("@GETPOST") && commandArr.length < 2)
+            {
+                System.out.println("Command Error!");
+                continue;
             }
             else
             {
@@ -194,7 +201,14 @@ class clientSocketController extends Thread
                 }
                 */
 
-                System.out.println(message);
+                if(message.charAt(0) == '#' && message.charAt(1) == ' ')
+                {
+                    System.out.println(message);
+                }
+                else
+                {
+                    System.out.println(message);
+                }
             }
 
             if(message == null)
@@ -220,7 +234,8 @@ class clientSocketController extends Thread
     {
         theOutputStream.println(data);
     }
-
+    
+    /*
     public void FileOutput(File file)
     {
         try
@@ -244,4 +259,5 @@ class clientSocketController extends Thread
             System.out.println(e.getMessage());
         }
     }
+    */
 }

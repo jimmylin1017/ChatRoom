@@ -1,3 +1,4 @@
+/*
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -7,14 +8,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
-
+*/
+import java.util.*;
 import java.io.*;
-
+import java.net.*;
 
 public class Server
 {
-	public HashMap<String,ArrayList<String>> groupMap = new HashMap<String, ArrayList<String>>();
+	//public HashMap<String,ArrayList<String>> groupMap = new HashMap<String, ArrayList<String>>();
+	public ArrayList<String> memberList = new ArrayList<String>();
 	public HashMap<String,PrintStream> printStreamMap = new HashMap<String, PrintStream>();
+	public ArrayList<String> articleList = new ArrayList<String>();
 	public ServerSocket serverSkt;
 
 	public static void main(String[] args)
@@ -64,7 +68,7 @@ public class Server
 	public class clientHandler implements Runnable
 	{
 		public String name;
-		public String groupName;
+		//public String groupName;
 		public Socket clientSkt;
 		private BufferedReader clientReader;
 		
@@ -86,12 +90,14 @@ public class Server
 				// read name from client
 				name = clientReader.readLine();
 				System.out.println("user name:" + name);
+				memberList.add(name);
 				
 				PrintStream outputToClinet = new PrintStream(clientSkt.getOutputStream());
 				printStreamMap.put(name, outputToClinet);
 				
-				showGroup();
+				//showGroup();
 				
+				/*
 				// 1 - add group, 2 - choose group
 				String types = clientReader.readLine();
 				int type = Integer.parseInt(types);
@@ -131,45 +137,52 @@ public class Server
 					System.out.println("new group " + groupName);
 				}
 				
-				showGroupMember();
-			
+				showMember();
+				*/
+
+				/*
+
+				command : @MEM, @RENAME, @SHOWPOST, @POST, @GETPOST
+
+				*/
+
 				String message;
 
 				while((message = clientReader.readLine()) != null)
 				{
-					String command[] = message.split(" ", 2);
-					if(command[0].toUpperCase().equals("@MEM"))
+					String commandArr[] = message.split(" ", 2);
+					if(commandArr[0].toUpperCase().equals("@MEM"))
 					{
-						showGroupMember();
+						showMember();
 					}
-					else if(command[0].toUpperCase().equals("@RENAME"))
+					else if(commandArr[0].toUpperCase().equals("@RENAME"))
 					{
-						groupMap.get(groupName).remove(name);
-						printStreamMap.remove(name);
-						name = command[1];
-						groupMap.get(groupName).add(name);
-						printStreamMap.put(name, outputToClinet);
+						name = changeName(name, commandArr[1]);
 					}
-					else if(command[0].toUpperCase().equals("@FILE"))
+					else if(commandArr[0].toUpperCase().equals("@SHOWPOST"))
 					{
-						//BufferedInputStream inputStream = new BufferedInputStream(clientSkt.getInputStream()); 
-						BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream("file/" + command[1])); 
-						System.out.println("waiting file....");
-						int counter = Integer.parseInt(clientReader.readLine());
-						System.out.println("counter : " + counter);
-						int readin;
-						while(counter > 0)
+						showAllArticle();
+					}
+					else if(commandArr[0].toUpperCase().equals("@POST"))
+					{
+						String articleArr[] = commandArr[1].split(" ", 2);
+						articleList.add(articleArr[0]);
+						try
 						{
-							readin = clientReader.read();
-							outputStream.write(readin);
-							System.out.println(readin);
-							counter--;
-                		}
-
-                		outputStream.flush();
-		                outputStream.close();                
-		                //inputStream.close(); 
-                		System.out.println("get file!");
+							new File("article/" + articleArr[0]).createNewFile();
+							FileWriter fw = new FileWriter("article/" + articleArr[0]);
+							fw.write(articleArr[1]);
+							fw.close();
+							System.out.println("get post : " + articleArr[0]);
+						}
+						catch(Exception e)
+						{
+							System.out.println(e.getMessage());
+						}
+					}
+					else if(commandArr[0].toUpperCase().equals("@GETPOST"))
+					{
+						showArticleContent(commandArr[1]);
 					}
 					else
 					{
@@ -181,20 +194,9 @@ public class Server
 				{
 					broadcast(name + "is exit");
 				}
-				
-				// remove name from group
-				groupMap.get(groupName).remove(name);
 
-				memberNumBroadcast();
-
-				// if group member is zero, remove group
-				ArrayList<String> namelist = groupMap.get(groupName);
-				
-				if(namelist.size() == 0)
-				{
-					groupMap.remove(groupName);
-					System.out.println("group : " + groupName + " is delete!");
-				}
+				memberList.remove(name);
+				printStreamMap.remove(name);
 				
 				clientSkt.close();
 			}
@@ -204,6 +206,7 @@ public class Server
 			}
 		}
 
+		/*
 		public void showGroup()
 		{
 			// get name output stream
@@ -231,25 +234,72 @@ public class Server
 				}
 			}
 		}
+		*/
 
-		public void showGroupMember()
+		public void showMember()
 		{
 			PrintStream outputToClinet = (PrintStream) printStreamMap.get(name);
-			outputToClinet.println("join in group : " + groupName);
-
-			// get group member
-			ArrayList<String> nameList = groupMap.get(groupName);
 			
 			outputToClinet.println("member:");
 			outputToClinet.flush();
 
-			for(int i = 0 ; i < nameList.size() ; i++)
+			for(int i = 0 ; i < memberList.size() ; i++)
 			{
-				outputToClinet.println(i + " : " + nameList.get(i));
+				outputToClinet.println(i + " : " + memberList.get(i));
 				outputToClinet.flush();	
 			}
 		}
 
+		public String changeName(String oldName, String newName)
+		{
+			PrintStream outputToClinet = (PrintStream) printStreamMap.get(oldName);
+
+			printStreamMap.remove(oldName);
+
+			printStreamMap.put(newName, outputToClinet);
+			
+			broadcast(oldName + " change name to " + newName);
+
+			return newName;
+		}
+
+		public void showArticleContent(String articleName)
+		{
+			PrintStream outputToClinet = (PrintStream) printStreamMap.get(name);
+
+			try
+			{
+				FileReader fr = new FileReader("article/" + articleName);
+				BufferedReader frbr = new BufferedReader(fr);
+				
+				String content;
+				while((content = frbr.readLine()) != null)
+				{
+					outputToClinet.println("# " + content);
+					outputToClinet.flush();	
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
+		}
+
+		public void showAllArticle()
+		{
+			PrintStream outputToClinet = (PrintStream) printStreamMap.get(name);
+			
+			outputToClinet.println("article:");
+			outputToClinet.flush();
+
+			for(int i = 0 ; i < articleList.size() ; i++)
+			{
+				outputToClinet.println(i + " : " + articleList.get(i));
+				outputToClinet.flush();
+			}
+		}
+
+		/*
 		public void memberNumBroadcast()
 		{
 			try
@@ -272,19 +322,20 @@ public class Server
 			}
 			
 		}
+		*/
 
 		public void broadcast(String message)
 		{
 			try
 			{
 				// get member from group
-				ArrayList<String> namelist = groupMap.get(groupName);
+				//ArrayList<String> namelist = groupMap.get(groupName);
 				
 				// output to all member
-				for(int i = 0 ; i < namelist.size() ; i++)
+				for(int i = 0 ; i < memberList.size() ; i++)
 				{
 					// get member output stream
-					PrintStream outputToClinet = (PrintStream) printStreamMap.get(namelist.get(i));
+					PrintStream outputToClinet = (PrintStream) printStreamMap.get(memberList.get(i));
 					
 					outputToClinet.println(message);
 					outputToClinet.flush();	
@@ -295,7 +346,6 @@ public class Server
 				System.out.println(e.getMessage());
 			}
 		}
-		
 	}
 
 }
