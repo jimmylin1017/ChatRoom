@@ -254,8 +254,10 @@ public class Server
 		{
 			PrintStream outputToClinet = (PrintStream) printStreamMap.get(oldName);
 
+			memberList.remove(oldName);
 			printStreamMap.remove(oldName);
 
+			memberList.add(newName);
 			printStreamMap.put(newName, outputToClinet);
 			
 			broadcast(oldName + " change name to " + newName);
