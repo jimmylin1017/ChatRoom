@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="839.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chatroommodel.FXMLDocumentController">
+   <children>
+      <Button fx:id="enter" layoutX="716.0" layoutY="625.0" mnemonicParsing="false" onAction="#EnterAction" prefHeight="200.0" prefWidth="98.0" text="Enter" />
+      <MenuBar prefHeight="32.0" prefWidth="842.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Mode">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#MenuLobbyAction" text="Lobby" />
+              <MenuItem mnemonicParsing="false" onAction="#MenuForumeAction" text="Forum" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Tool">
+            <items>
+              <MenuItem fx:id="wr" disable="true" mnemonicParsing="false" onAction="#Writing" text="Write an eassy" />
+              <MenuItem fx:id="reload" disable="true" mnemonicParsing="false" text="Reload the page" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="View">
+            <items>
+              <MenuItem fx:id="mr" disable="true" mnemonicParsing="false" onAction="#MaximizeRight" text="Maximize right" />
+              <MenuItem fx:id="ml" disable="true" mnemonicParsing="false" onAction="#MaximizeLeft" text="Maximize left" />
+              <MenuItem fx:id="de" disable="true" mnemonicParsing="false" onAction="#Default" text="Default" />
+            </items>
+          </Menu>
+        </menus>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </MenuBar>
+      <TextArea fx:id="tachatinput" layoutX="21.0" layoutY="625.0" prefHeight="200.0" prefWidth="686.0" wrapText="true" />
+      <TextArea fx:id="tachatdisplay" editable="false" layoutX="21.0" layoutY="64.0" prefHeight="550.0" prefWidth="790.0" wrapText="true" />
+      <TextArea fx:id="taforumdisplay" disable="true" layoutX="426.0" layoutY="64.0" opacity="0.0" prefHeight="762.0" prefWidth="389.0" wrapText="true" />
+      <TextFlow fx:id="taforumarticle" layoutX="21.0" layoutY="64.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="762.0" prefWidth="389.0" />
+   </children>
+</AnchorPane>
