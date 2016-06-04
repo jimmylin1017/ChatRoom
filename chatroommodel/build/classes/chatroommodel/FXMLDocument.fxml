@@ -38,7 +38,7 @@
          </cursor>
       </MenuBar>
       <TextArea fx:id="tachatinput" layoutX="21.0" layoutY="625.0" prefHeight="200.0" prefWidth="686.0" wrapText="true" />
-      <TextArea fx:id="tachatdisplay" editable="false" layoutX="21.0" layoutY="64.0" prefHeight="550.0" prefWidth="790.0" wrapText="true" />
+      <TextArea fx:id="tachatdisplay" layoutX="21.0" layoutY="64.0" prefHeight="550.0" prefWidth="790.0" wrapText="true" />
       <TextArea fx:id="taforumdisplay" disable="true" layoutX="426.0" layoutY="64.0" opacity="0.0" prefHeight="762.0" prefWidth="389.0" wrapText="true" />
       <TextFlow fx:id="taforumarticle" layoutX="21.0" layoutY="64.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="762.0" prefWidth="389.0" />
    </children>

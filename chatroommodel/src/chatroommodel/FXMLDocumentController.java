@@ -2,8 +2,17 @@
 package chatroommodel;
 
 
+import static chatroommodel.Chatroommodel.cl;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,7 +47,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextArea tachatinput;
     @FXML
-    private TextArea tachatdisplay;
+    protected  TextArea tachatdisplay;
     @FXML
     private TextFlow taforumarticle;
     @FXML
@@ -62,13 +71,26 @@ public class FXMLDocumentController implements Initializable {
     /*1 for forumarticle, 2 for forumdisplay, 0 for default.*/
     public static int con = 0;          
     
-
- 
+    /*
+    public void print(String str)
+    {
+        Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        tachatdisplay.appendText(str);  
+                    }
+                });
+    }
+    */
     
     @FXML
     private void EnterAction(ActionEvent event) 
     {
-        System.out.println("You clicked Enter!");
+        //System.out.println("You clicked Enter!");
+        
+        String msg = tachatinput.getText();
+        //tachatdisplay.appendText("fgdfsg");
+        cl.sendMessage(msg);
     }
     
     @FXML
@@ -206,6 +228,4 @@ public class FXMLDocumentController implements Initializable {
         tfchatinput.setStyle("-fx-background-color: #CCBBFF;");
         tfchatdisplay.setStyle("-fx-text-fill: black;");*/
     }    
-  
-    
 }
