@@ -12,6 +12,7 @@ Purpose: This is the box for writing an essay.
 *********************
 */
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,9 +26,7 @@ public class EssayBox {
     static String context="";
     
     public String display()
-    {
-        
-        
+    {     
         
         /*Anchor pane*/
         AnchorPane ap = new AnchorPane();
@@ -73,16 +72,38 @@ public class EssayBox {
         /*Scene*/
         Scene scene = new Scene(ap,700,740);
         scene.getStylesheets().add(Chatroommodel.class.getResource("EssayBoxstyle.css").toExternalForm());
-         
+        
+        
+        window.setOnCloseRequest(e -> {
+               context = null;
+            });
+        
         /*The action for send button.*/
         btn.setOnAction(e -> {
             System.out.println("You clicked send\n");
-            context = tf.getText();
+
+             String str= ta.getText();
+                
+            System.out.println(str);
+            context = tf.getText()+" "+str;
+            
+            /*if(tf.getText().trim().isEmpty())
+            {
+                context = null;
+                Platform.runLater(new Runnable(){
+                @Override
+                public void run()
+                {
+                    AlertBox.display("The Title cannot be empty!");
+                }
+               });
+            }*/
+                
             window.close();
         });
         
         window.setScene(scene);
-        window.showAndWait();
+        window.showAndWait();        
         
         return context;
     }

@@ -67,7 +67,16 @@ public class PortBox {
         grid.add(actiontarget, 1, 6);
         
         btn.setOnAction(e -> {
-            port = Portnumber.getText()+" "+IPaddr.getText()+" "+name.getText();
+            if(Portnumber.getText().trim().isEmpty() 
+            || IPaddr.getText().trim().isEmpty()
+            || name.getText().trim().isEmpty())
+            {
+                System.out.println("zz111");
+                port = null;
+            }
+            else    
+                port = Portnumber.getText()+" "+IPaddr.getText()+" "+name.getText();
+            
             stage.close();
         });
         

@@ -3,16 +3,8 @@ package chatroommodel;
 
 
 import static chatroommodel.Chatroommodel.cl;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Scanner;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -43,13 +35,13 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button enter;
     @FXML
-    private TextArea taforumdisplay;
+    protected TextArea taforumdisplay;
     @FXML
     private TextArea tachatinput;
     @FXML
-    protected  TextArea tachatdisplay;
+    protected TextArea tachatdisplay;
     @FXML
-    private TextFlow taforumarticle;
+    protected TextFlow taforumarticle;
     @FXML
     private MenuItem mr;
     @FXML
@@ -84,6 +76,13 @@ public class FXMLDocumentController implements Initializable {
     */
     
     @FXML
+    private void Reload(ActionEvent event)
+    {
+        taforumarticle.getChildren().clear();
+        cl.sendMessage("@SHOWPOST");
+    }
+    
+    @FXML
     private void EnterAction(ActionEvent event) 
     {
         //System.out.println("You clicked Enter!");
@@ -91,6 +90,7 @@ public class FXMLDocumentController implements Initializable {
         String msg = tachatinput.getText();
         //tachatdisplay.appendText("fgdfsg");
         cl.sendMessage(msg);
+        tachatinput.clear();
     }
     
     @FXML
@@ -100,8 +100,8 @@ public class FXMLDocumentController implements Initializable {
         tachatdisplay.setDisable(true);
         tachatinput.setOpacity(0);
         tachatinput.setDisable(true);
-        
-        
+       
+                
         taforumarticle.setOpacity(1);
         taforumarticle.setDisable(false);
         taforumarticle.setStyle("-fx-background-color: #F8F8F8;"
@@ -157,24 +157,42 @@ public class FXMLDocumentController implements Initializable {
         /*Add hyperlink for one line.*/
         
         EssayBox eb = new EssayBox();
-        
         String context = eb.display();
-      
-        /*Generate hyperlink*/
-        Hyperlink hyper = new Hyperlink(context);
-     
-        
-        /*Make evey hyperlink on its own line.*/
-        Text tx = new Text("\n");
-        
-        /*Set hyperlink style.*/
-        hyper.setStyle("-fx-text-fill: blue;"
-                + "-fx-font-size: 20pt;");
-        
+        if(context!=null)
+        {       
+            //System.out.println(context);
 
+            /*The line number*/
+            String[] lines = context.split("\n");
+            System.out.println(lines.length);
+
+            String splstr[] = context.split(" ");
+
+            String name = splstr[0];
+            System.out.println("@POST "+name+" "+lines.length);
+            cl.sendMessage("@POST "+name+" "+lines.length);
+            cl.sendMessage(splstr[1]);
+
+            /*Generate hyperlink*/
+            Hyperlink hyper = new Hyperlink(name);
+            hyper.setId(name);
+
+            hyper.setOnAction(e -> {
+                taforumdisplay.clear();
+                cl.sendMessage("@GETPOST "+hyper.getId());
+            });
+
+            /*Make evey hyperlink on its own line.*/
+            Text tx = new Text("\n");
+
+            /*Set hyperlink style.*/
+            hyper.setStyle("-fx-text-fill: blue;"
+                    + "-fx-font-size: 20pt;");
+
+            taforumarticle.getChildren().add(hyper);
+            taforumarticle.getChildren().add(tx);
+        }
         
-        taforumarticle.getChildren().add(hyper);
-        taforumarticle.getChildren().add(tx);
     }
         
     @FXML
@@ -227,5 +245,6 @@ public class FXMLDocumentController implements Initializable {
         /*anchorpane.setStyle("-fx-background-color: #191919;");      //Change background color here.
         tfchatinput.setStyle("-fx-background-color: #CCBBFF;");
         tfchatdisplay.setStyle("-fx-text-fill: black;");*/
+        
     }    
 }
