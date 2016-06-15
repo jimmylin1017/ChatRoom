@@ -122,10 +122,11 @@ public class Server
 					}
 					else if(commandArr[0].toUpperCase().equals("@POST"))
 					{
-						String articleArr[] = commandArr[1].split(" ", 2);
+						String articleArr[] = commandArr[1].split("!%", 2);
 						articleList.add(articleArr[0]);
 						try
 						{
+							articleArr[0].replaceAll(" ", "_");
 							new File("article/" + articleArr[0]).createNewFile();
 							FileWriter fw = new FileWriter("article/" + articleArr[0]);
 							int lines = Integer.parseInt(articleArr[1]);
