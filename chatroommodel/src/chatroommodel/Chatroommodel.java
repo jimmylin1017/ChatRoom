@@ -14,9 +14,9 @@ import javafx.stage.Stage;
 /*
 ******************************
 Author: Robert Lee
-Date: 2016 summer
+Developed date: 2016 spring to summer
 Purpose: Write a chatroom and forum system for course Soft Engineering.
-Version: 1.0
+Version: 1.3
 ******************************
  */
 
@@ -46,34 +46,38 @@ public class Chatroommodel extends Application
         
         if(str!=null)
         {
-            String splstr[] = str.split(" ");
+            if(str!="-1")
+            {
+                String splstr[] = str.split(" ");
        
         
-            String _host = splstr[1];
+                String _host = splstr[1];
 
-            int _port = parseInt(splstr[0]);
+                int _port = parseInt(splstr[0]);
 
-            String _name = splstr[2];
+                String _name = splstr[2];
 
 
-            System.out.println(_name);
-            cl = new Client(_host, _port,_name,controller);
-            cl.setToClient();
+                System.out.println(_name);
+                cl = new Client(_host, _port,_name,controller);
+                cl.setToClient();
+
+
+
+
+                stage.setResizable(false);
+                stage.setTitle("Chat & Forum Client");
+                stage.setScene(scene);
+                stage.show();
+
+                /*When press x button on the top-rigth.*/
+                stage.setOnCloseRequest(e -> {
+                   cl.threadclose();
+                    Platform.exit();
+                    System.exit(0);
+                });
+                }
             
-            
-            
-            
-            stage.setResizable(false);
-            stage.setTitle("Chatroom");
-            stage.setScene(scene);
-            stage.show();
-            
-            /*When press x button on the top-rigth.*/
-            stage.setOnCloseRequest(e -> {
-               cl.threadclose();
-                Platform.exit();
-                System.exit(0);
-            });
         }
         else
         {

@@ -81,23 +81,32 @@ public class EssayBox {
         /*The action for send button.*/
         btn.setOnAction(e -> {
             System.out.println("You clicked send\n");
-
-             String str= ta.getText();
-                
-            System.out.println(str);
-            context = tf.getText()+" "+str;
             
-            /*if(tf.getText().trim().isEmpty())
+            if(tf.getText().trim().isEmpty())
             {
-                context = null;
-                Platform.runLater(new Runnable(){
-                @Override
-                public void run()
+                context=null;
+                AlertBox.display("Title can't be empty");
+            }
+            else
+            {
+                String str= ta.getText();
+                
+                System.out.println(str);
+                context = tf.getText()+"!%"+str;
+
+                /*if(tf.getText().trim().isEmpty())
                 {
-                    AlertBox.display("The Title cannot be empty!");
-                }
-               });
-            }*/
+                    context = null;
+                    Platform.runLater(new Runnable(){
+                    @Override
+                    public void run()
+                    {
+                        AlertBox.display("The Title cannot be empty!");
+                    }
+                   });
+                }*/
+            }
+            
                 
             window.close();
         });

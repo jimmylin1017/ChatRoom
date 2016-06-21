@@ -166,11 +166,12 @@ public class FXMLDocumentController implements Initializable {
             String[] lines = context.split("\n");
             System.out.println(lines.length);
 
-            String splstr[] = context.split(" ");
+            String splstr[] = context.split("!%",2);
 
             String name = splstr[0];
-            System.out.println("@POST "+name+" "+lines.length);
-            cl.sendMessage("@POST "+name+" "+lines.length);
+            System.out.println("@POST "+name+"!%"+lines.length);
+            System.out.println(splstr[1]);
+            cl.sendMessage("@POST "+name+"!%"+lines.length);
             cl.sendMessage(splstr[1]);
 
             /*Generate hyperlink*/
@@ -188,9 +189,10 @@ public class FXMLDocumentController implements Initializable {
             /*Set hyperlink style.*/
             hyper.setStyle("-fx-text-fill: blue;"
                     + "-fx-font-size: 20pt;");
-
+            
             taforumarticle.getChildren().add(hyper);
             taforumarticle.getChildren().add(tx);
+            
         }
         
     }

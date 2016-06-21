@@ -1,17 +1,17 @@
-/*
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Set;
-*/
+
 import java.util.*;
 import java.io.*;
 import java.net.*;
+
+/*
+========================
+Author: Jimmy Lin, Robert Lee
+Development Date: 2016 Spring to summer 
+Purpose: Software engineering project for the chat & forum system. The program is the server part.
+Version: 1.0
+========================
+*/
+
 
 public class Server
 {
@@ -29,7 +29,19 @@ public class Server
 		int port = keyboard.nextInt();
 		
 		keyboard.close();
-
+	
+		File dir = new File("article");
+		
+		/*Create the article directory to store eassys*/
+		if (!dir.exists())
+		{
+			try{
+				dir.mkdir();
+			} 
+			catch(SecurityException se){
+				System.out.println("Fail to create article directory");
+			}      
+		}
 		// run server
 		new Server(port).start();
 		

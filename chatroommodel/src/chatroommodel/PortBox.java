@@ -71,13 +71,16 @@ public class PortBox {
             || IPaddr.getText().trim().isEmpty()
             || name.getText().trim().isEmpty())
             {
-                System.out.println("zz111");
+                //System.out.println("zz111");
                 port = null;
             }
             else    
                 port = Portnumber.getText()+" "+IPaddr.getText()+" "+name.getText();
             
             stage.close();
+        });
+        stage.setOnCloseRequest(e -> {
+            port = "-1";
         });
         
         Scene scene = new Scene(grid, 300, 375);
